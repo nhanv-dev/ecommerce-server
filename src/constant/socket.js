@@ -1,0 +1,6 @@
+module.exports = {
+    ORIGIN: 'http://localhost:3000',
+    INIT: "INIT",
+    NOTIFY_FOLLOWING_ACCOUNT: "NOTIFY_FOLLOWING_ACCOUNT",
+    FOLLOW_ACCOUNT: "FOLLOW_ACCOUNT",
+}
