@@ -3,9 +3,10 @@ const router = require("express").Router();
 
 router
     .get("/:id", userController.findOne)
-    .post("/create", userController.findOne)
-    .put("/update", userController.findOne)
+    .post("/create", userController.create)
+    .put("/update", userController.update)
     .delete("/delete", userController.findOne)
-    .get("/", userController.findOne)
-
+    .post("/account-register", userController.registerAccount)
+    .post("/forget-password", userController.forgetPassword)
+    .put("/active-account", userController.activeAccount)
 module.exports = router;
