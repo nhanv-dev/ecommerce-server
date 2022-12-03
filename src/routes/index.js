@@ -4,6 +4,7 @@ function Router(app) {
     app.use('/api/v1/products', require('./ProductRouter'))
     app.use('/api/v1/users', require('./UserRouter'))
     app.use('/api/v1/sellers', require('./UserRouter'))
+    app.use('/api/v1/auth', require('./AuthRouter'))
 }
 
 module.exports = Router
