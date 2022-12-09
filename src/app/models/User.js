@@ -6,18 +6,11 @@ const {multipleMongooseToObject, mongooseToObject} = require('../../utils/mongoo
 mongoose.plugin(slug);
 
 const User = new Schema({
-<<<<<<< HEAD
-    username: {type: String, unique: true},
-    password: {type: String},
-    fullName: {type: String, trim: true},
-    email: {type: String},
-=======
-    firstName: {type: String, required: true},
-    lastName: {type: String, required: true},
     username: {type: String, unique: true, required: true},
     password: {type: String, required: true},
-    email: {type: String, required: true},
->>>>>>> 70e432de511b7250956edd2855ff6eae8c1513e5
+    fullName: {type: String, trim: true},
+    email: {type: String},
+    phone: {type: String},
     type: String,
     token: {type: String, default: ''},
     isActive: {type: Boolean, default: false},
@@ -35,6 +28,7 @@ User.statics.createUser = async function (firstName, lastName, username, passwor
     if (isExist) throw ({error: 'User is exist in database'});
     return await this.create({firstName, lastName, username, password, email, type});
 }
+
 User.statics.updateUser = async function (firstName, lastName, email, password) {
     if (!firstName) throw ({error: 'FirstName of user is not empty'});
     if (!lastName) throw ({error: 'LastName of user is not empty'});
@@ -42,7 +36,6 @@ User.statics.updateUser = async function (firstName, lastName, email, password) 
     if (!email) throw ({error: 'Email of user is not empty'});
     return await this.update({firstName, lastName, email, password});
 }
-
 
 User.statics.findUserByEmail = async function (value) {
     const user = await this.findOne({email: value});
