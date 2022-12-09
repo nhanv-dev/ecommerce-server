@@ -1,14 +1,24 @@
 const User = require('../models/User')
+<<<<<<< Updated upstream
 const {multipleMongooseToObject, mongooseToObject} = require('../../utils/mongoose')
 const Category = require("../models/Category");
+=======
+const jwt = require('jsonwebtoken');
+const {multipleMongooseToObject, mongooseToObject} = require('../../utils/mongoose')
+>>>>>>> Stashed changes
 const config = require("../../config/email");
 const nodeMailer = require("nodemailer");
 const randomstring = require("randomstring");
 const Mailer = require("../../utils/mailer");
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
 class UserController {
 
     async findOne(req, res, next) {
+<<<<<<< Updated upstream
         await User.findOne({id: req.params.id}).then(async (user) => {
             const data = await mongooseToObject(user);
             res.send(data);
@@ -93,7 +103,59 @@ class UserController {
         } catch (error) {
             return res.status(500).json({success: false, error: error});
         }
+=======
+        // await User.findOne({id: req.params.id}).then(async (user) => {
+        //     const data = await mongooseToObject(user);
+        //     res.send(data);
+        // }).catch(next)
+>>>>>>> Stashed changes
     }
+
+    async update(req, res) {
+        try {
+            const {firstName, lastName, email, password} = req.body;
+            const user = await User.updateUser(firstName, lastName, email, password);
+            // return res.status(200).json({success: true, user: {...user, password: null}});
+            return res.status(200).json({success: true});
+        } catch (error) {
+            return res.status(500).json({success: false, error: error});
+        }
+    }
+
+    async activeAccount(req, res) {
+        try {
+            const {token} = req.query;
+            const user = await mongooseToObject(await User.findOne({token: token}));
+            if (!user) return res.status(200).json({success: false, message: "User not exist in Database"});
+            if (user.isActive) return res.status(200).json({success: false, message: "Account activated"});
+            const diff = Math.abs(new Date().getTime() - user.createdAt.getTime()) / 3600000;
+            if (diff > 1) return res.status(200).json({success: false, message: "Authentication timeout"});
+            await User.updateOne({email: user.email}, {$set: {token: "", isActive: true}});
+            return res.status(200).json({success: true, message: "Successfully account activated"});
+        } catch (error) {
+            return res.status(500).json({success: false, error: error});
+        }
+    }
+
+    async forgetPassword(req, res) {
+        try {
+            const {email} = req.body;
+            if (!email) return res.status(200).json({success: false, message: "Email not empty"});
+            const user = await User.findUserByEmail(email);
+            console.log(user)
+            if (!user) {
+                return res.status(200).json({success: false, message: "Email not exist"});
+            } else {
+                const randomString = randomstring.generate();
+                await User.updateOne({email: email}, {$set: {password: randomString}});
+                await Mailer.resetPassword(user.username, user.email, randomString);
+                return res.status(200).json({success: true,message: "Please check your inbox of mail."});
+            }
+        } catch (error) {
+            return res.status(500).json({success: false, error: error});
+        }
+    }
+
 }
 
 module.exports = new UserController
