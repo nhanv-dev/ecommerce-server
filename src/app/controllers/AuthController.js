@@ -1,18 +1,24 @@
 const User = require('../models/User');
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
+const config = require("../../config/email");
+const randomstring = require("randomstring");
+const Mailer = require("../../utils/mailer");
+
 
 class AuthController {
     async register(req, res) {
         try {
-            const {username, password, email} = req.body;
+            const {firstName, lastName, username, password, email} = req.body;
             const user = await User.findOne({username});
-            if (user) return res.status(400).json({});
+            if (user) return res.status(400).json({success: false, message: "User isExist in Db"});
+            const token = randomstring.generate();
             const newUser = new User({
-                username, password: CryptoJS.MD5(password).toString(),
-                email
+                firstName, lastName, username, password: CryptoJS.MD5(password).toString(), email, token: token
             });
             const savedUser = await newUser.save();
+            await Mailer.activeAccount(username, email, token);
+
             res.status(201).json(savedUser);
         } catch (err) {
             res.status(500).json(err);

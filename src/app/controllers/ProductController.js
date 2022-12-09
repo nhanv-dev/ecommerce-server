@@ -21,6 +21,7 @@ class ProductController {
         }
     }
 
+
     async findOne(req, res) {
         try {
             const product = await Product.getProductById(req.param.id);

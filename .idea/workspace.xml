@@ -4,30 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="be8e6743-2366-4bc0-a067-69b465cc5d67" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/app/controllers/QuestionController.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/controllers/ShopController.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/models/Answer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/models/Order.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/models/OrderItem.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/models/Question.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/models/Shop.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/QuestionRouter.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/ShopRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/controllers/AuthController.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/controllers/AuthController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/controllers/CategoryController.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/controllers/CategoryController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/controllers/ProductController.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/controllers/ProductController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/models/Category.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/models/Category.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/models/Product.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/models/Product.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/models/User.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/models/User.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/AuthRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/AuthRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/CategoryRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/CategoryRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/ProductRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/ProductRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/index.js" afterDir="false" />
-    </list>
+    <list default="true" id="be8e6743-2366-4bc0-a067-69b465cc5d67" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -123,6 +100,7 @@
       <workItem from="1670342473805" duration="7544000" />
       <workItem from="1670409730376" duration="3035000" />
       <workItem from="1670516979516" duration="4747000" />
+      <workItem from="1670577626467" duration="506000" />
     </task>
     <servers />
   </component>
