@@ -11,7 +11,7 @@ function socket(server) {
 
     io.use(function (socket, next) {
         next();
-    })
+    });
 
     io.on("connection", function (socket) {
         console.log("connection socket", socket.id);
