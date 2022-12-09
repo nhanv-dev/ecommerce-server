@@ -9,10 +9,6 @@ const CartDetail = new Schema({
     price: {type: Number, required: true},
     discount: {type: Schema.Types.ObjectId, required: false}
 });
-CartDetail.statics.getAll = async function (cartId) {
-    return await this.findAll();
-}
-
 CartDetail.statics.updateCartDetail = async function (cartId, productId, quantity) {
     await this.updateOne({cartId: cartId, productId: productId}, {$set: {quantity: quantity}});
     return await this.findOne({cartId: cartId, productId: productId});
