@@ -4,12 +4,10 @@ const slug = require('mongoose-slug-generator');
 
 mongoose.plugin(slug);
 
-
 const User = new Schema({
-    firstName: String,
-    lastName: String,
     username: {type: String, unique: true},
     password: {type: String},
+    fullName: {type: String, trim: true},
     email: {type: String},
     type: String,
     slug: {type: String, slug: 'username', unique: true},

@@ -5,19 +5,17 @@ const slug = require('mongoose-slug-generator');
 mongoose.plugin(slug);
 
 const Product = new Schema({
-    name: {type: String, required: false},
-    description: {type: String},
-    sell_price: {type: Number, required: false},
-    images: [],
-    variants: [],
-    bundle: [],
-    tags: {type: Array, required: false},
+    name: {type: String, required: true, trim: true},
+    description: {type: String, trim: true},
+    sellPrice: {type: Number, required: true},
+    images: [{url: {type: String}}],
+    tags: [{type: String}],
     slug: {type: String, unique: true, slug: 'name'},
-    category_id: {type: Schema.Types.ObjectId, required: false},
-    seller_id: {type: Schema.Types.ObjectId, required: false},
+    category_id: {type: Schema.Types.ObjectId},
+    seller_id: {type: Schema.Types.ObjectId},
 }, {timestamps: true})
 
-Product.statics.createProduct = async function (product) {
+Product.statics.saveProduct = async function (product) {
     try {
         const p = await this.create({...product});
         return p;

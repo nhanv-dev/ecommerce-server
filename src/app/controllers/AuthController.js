@@ -32,6 +32,15 @@ class AuthController {
         }
     }
 
+    async reLogin(req, res) {
+        try {
+            const {user} = req;
+            const accessToken = jwt.sign({_id: user._id, username: user.username}, 'RESTFULAPIs');
+            return res.status(200).json({accessToken, user});
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    }
 
 }
 

@@ -5,27 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="be8e6743-2366-4bc0-a067-69b465cc5d67" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/controllers/AuthController.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/constant/userRoles.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/middlewares/verifyToken.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/AuthRouter.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/controllers/QuestionController.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/controllers/ShopController.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/models/Answer.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/models/Order.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/models/OrderItem.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/models/Question.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/models/Shop.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/QuestionRouter.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/ShopRouter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/controllers/AuthController.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/controllers/AuthController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/controllers/CategoryController.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/controllers/CategoryController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/controllers/ProductController.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/controllers/ProductController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/controllers/UserController.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/controllers/UserController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/models/Category.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/models/Category.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/models/Product.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/models/Product.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/models/User.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/models/User.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/constant/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/constant/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middlewares/jwt.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/AuthRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/AuthRouter.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/CategoryRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/CategoryRouter.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/ProductRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/ProductRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/UserRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/UserRouter.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/socket/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/socket/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +61,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;16.15.1&quot;,
     &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;16.11.58&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/tmdt/server/src/app/controllers&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/tmdt/server/src/routes&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -73,8 +74,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\tmdt\server\src\app\controllers" />
       <recent name="D:\tmdt\server\src\routes" />
+      <recent name="D:\tmdt\server\src\app\controllers" />
+      <recent name="D:\tmdt\server\src\app\models" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\tmdt\server\src\middlewares" />
@@ -114,7 +116,13 @@
       <workItem from="1669878803246" duration="1924000" />
       <workItem from="1669916642461" duration="604000" />
       <workItem from="1669957739300" duration="8660000" />
-      <workItem from="1670051180851" duration="656000" />
+      <workItem from="1670051180851" duration="2000000" />
+      <workItem from="1670089393394" duration="3937000" />
+      <workItem from="1670158999061" duration="1267000" />
+      <workItem from="1670227345663" duration="613000" />
+      <workItem from="1670342473805" duration="7544000" />
+      <workItem from="1670409730376" duration="3035000" />
+      <workItem from="1670516979516" duration="4747000" />
     </task>
     <servers />
   </component>
