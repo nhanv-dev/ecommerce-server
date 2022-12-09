@@ -2,11 +2,12 @@ const Category = require('../models/Category');
 const {multipleMongooseToObject, mongooseToObject} = require('../../utils/mongoose');
 
 class CategoryController {
-    async create(req, res) {
+
+    async save(req, res) {
         try {
             const {name, parent} = req.body;
-            const category = await Category.createCategory(name, parent);
-            return res.status(200).json({success: true, category: await mongooseToObject(category)});
+            const category = await Category.saveCategory(name, parent);
+            return res.status(200).json({success: true, category});
         } catch (error) {
             return res.status(500).json({success: false, error: error});
         }
@@ -15,8 +16,9 @@ class CategoryController {
     async update(req, res) {
         try {
             const {name, parent} = req.body;
+            // const category = await Category.updateMany({$rename: {'parent': 'parentId'}});
             const category = await Category.updateCategory(name, parent);
-            return res.status(200).json({success: true, category: await mongooseToObject(category)});
+            return res.status(200).json({success: true, category});
         } catch (error) {
             return res.status(500).json({success: false, error: error});
         }
@@ -46,7 +48,7 @@ class CategoryController {
     async findOne(req, res) {
         try {
             const category = await Category.getById(req.param.id);
-            return res.status(200).json({success: true, category: await multipleMongooseToObject(category)});
+            return res.status(200).json({success: true, category});
         } catch (error) {
             return res.status(500).json({success: false, error: error});
         }
@@ -56,7 +58,7 @@ class CategoryController {
         try {
             const {slug} = req.params;
             const category = await Category.getBySlug(slug);
-            return res.status(200).json({success: true, category: await mongooseToObject(category)});
+            return res.status(200).json({success: true, category});
         } catch (error) {
             console.log(error)
             return res.status(500).json({success: false, error: error});

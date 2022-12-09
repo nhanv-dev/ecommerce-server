@@ -6,6 +6,13 @@ const {mongooseToObject} = require("../../utils/mongoose");
 mongoose.plugin(slug);
 
 const Product = new Schema({
+<<<<<<< HEAD
+    name: {type: String, required: true, trim: true},
+    description: {type: String, trim: true},
+    sellPrice: {type: Number, required: true},
+    images: [{url: {type: String}}],
+    tags: [{type: String}],
+=======
     name: {type: String, required: false},
     description: {type: String},
     seller_price: {type: Number, required: true},
@@ -18,13 +25,18 @@ const Product = new Schema({
     variants: [],
     bundle: [],
     tags: {type: Array, required: false},
+>>>>>>> 70e432de511b7250956edd2855ff6eae8c1513e5
     slug: {type: String, unique: true, slug: 'name'},
-    category_id: {type: Schema.Types.ObjectId, required: false},
-    seller_id: {type: Schema.Types.ObjectId, required: false},
+    category_id: {type: Schema.Types.ObjectId},
+    seller_id: {type: Schema.Types.ObjectId},
 }, {timestamps: true})
 
+<<<<<<< HEAD
+Product.statics.saveProduct = async function (product) {
+=======
 Product.statics.createProduct = async function (product) {
 
+>>>>>>> 70e432de511b7250956edd2855ff6eae8c1513e5
     try {
         const p = await this.create({...product});
         return p;

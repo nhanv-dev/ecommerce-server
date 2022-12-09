@@ -7,21 +7,22 @@ mongoose.plugin(slug);
 const Category = new Schema({
     name: {type: String, unique: true},
     slug: {type: String, unique: true, slug: 'name'},
-    parentId: {type: Schema.Types.ObjectId},
+    parent: Schema.Types.ObjectId,
 }, {timestamps: true});
 
 
 Category.statics.getAll = async function (limit) {
     const list = [];
-    const parents = await this.find({parentId: null}).limit(limit);
+    const parents = await this.find({parent: null}).limit(limit);
     list.push(...parents)
     for (const parent of parents) {
-        await this.find({parentId: parent._id}).then(res => list.push(...res))
+        const child = await this.find({parent: parent._id})
+        list.push(...child)
     }
     return list;
 }
 
-Category.statics.saveCategory = async function (name, parent) {
+Category.statics.createCategory = async function (name, parent) {
     if (!name) throw ({error: 'Name of category is not empty'});
     const isExist = await this.findOne({name});
     if (isExist) throw ({error: 'Category is exist in database'});

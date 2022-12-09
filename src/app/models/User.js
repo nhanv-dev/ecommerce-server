@@ -5,13 +5,19 @@ const {multipleMongooseToObject, mongooseToObject} = require('../../utils/mongoo
 
 mongoose.plugin(slug);
 
-
 const User = new Schema({
+<<<<<<< HEAD
+    username: {type: String, unique: true},
+    password: {type: String},
+    fullName: {type: String, trim: true},
+    email: {type: String},
+=======
     firstName: {type: String, required: true},
     lastName: {type: String, required: true},
     username: {type: String, unique: true, required: true},
     password: {type: String, required: true},
     email: {type: String, required: true},
+>>>>>>> 70e432de511b7250956edd2855ff6eae8c1513e5
     type: String,
     token: {type: String, default: ''},
     isActive: {type: Boolean, default: false},
