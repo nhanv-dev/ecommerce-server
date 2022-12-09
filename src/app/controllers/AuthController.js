@@ -5,6 +5,7 @@ const config = require("../../config/email");
 const randomstring = require("randomstring");
 const Mailer = require("../../utils/mailer");
 
+
 class AuthController {
     async register(req, res) {
         try {
@@ -17,6 +18,7 @@ class AuthController {
             });
             const savedUser = await newUser.save();
             await Mailer.activeAccount(username, email, token);
+
             res.status(201).json(savedUser);
         } catch (err) {
             res.status(500).json(err);

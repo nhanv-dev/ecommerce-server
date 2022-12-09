@@ -11,10 +11,18 @@ const Category = new Schema({
 }, {timestamps: true});
 
 
-Category.statics.getAll = async function () {
-    return await this.find();
+Category.statics.getAll = async function (limit) {
+    const list = [];
+    const parents = await this.find({parent: null}).limit(limit);
+    list.push(...parents)
+    for (const parent of parents) {
+        const child = await this.find({parent: parent._id})
+        list.push(...child)
+    }
+    return list;
 }
-Category.statics.createCategory = async function (name, parent, child) {
+
+Category.statics.createCategory = async function (name, parent) {
     if (!name) throw ({error: 'Name of category is not empty'});
     const isExist = await this.findOne({name});
     if (isExist) throw ({error: 'Category is exist in database'});
@@ -31,14 +39,14 @@ Category.statics.deleteCategory = async function (id) {
     return await this.create({id});
 }
 
-Category.statics.getCategoryById = async function (id) {
+Category.statics.getById = async function (id) {
     const category = await this.findOne(id);
     if (!category) throw ({error: 'No category with this id found'});
     return category;
 }
 
-Category.statics.getCategoryBySlug = async function (slug) {
-    const category = await this.findOne(slug);
+Category.statics.getBySlug = async function (slug) {
+    const category = await this.findOne({slug});
     if (!category) throw ({error: 'No category with this slug found'});
     return category;
 }

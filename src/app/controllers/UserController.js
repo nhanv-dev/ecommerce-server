@@ -1,28 +1,23 @@
 const User = require('../models/User')
-<<<<<<< Updated upstream
+
 const {multipleMongooseToObject, mongooseToObject} = require('../../utils/mongoose')
 const Category = require("../models/Category");
-=======
 const jwt = require('jsonwebtoken');
-const {multipleMongooseToObject, mongooseToObject} = require('../../utils/mongoose')
->>>>>>> Stashed changes
 const config = require("../../config/email");
 const nodeMailer = require("nodemailer");
 const randomstring = require("randomstring");
 const Mailer = require("../../utils/mailer");
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 
 class UserController {
 
     async findOne(req, res, next) {
-<<<<<<< Updated upstream
+
         await User.findOne({id: req.params.id}).then(async (user) => {
             const data = await mongooseToObject(user);
             res.send(data);
         }).catch(next)
+
     }
 
     async create(req, res) {
@@ -103,12 +98,7 @@ class UserController {
         } catch (error) {
             return res.status(500).json({success: false, error: error});
         }
-=======
-        // await User.findOne({id: req.params.id}).then(async (user) => {
-        //     const data = await mongooseToObject(user);
-        //     res.send(data);
-        // }).catch(next)
->>>>>>> Stashed changes
+
     }
 
     async update(req, res) {

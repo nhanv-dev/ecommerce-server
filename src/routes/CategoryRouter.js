@@ -7,7 +7,6 @@ router
     .put("/:id", categoryController.update)
     .delete("/:id", categoryController.delete)
     .get("/:id", categoryController.findOne)
-    .get("/:slug", categoryController.findBySlug)
-    .get("/:id/comments", categoryController.findOne)
+    .get("/slug/:slug", categoryController.findBySlug)
 
 module.exports = router;

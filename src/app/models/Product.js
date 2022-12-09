@@ -6,31 +6,25 @@ const {mongooseToObject} = require("../../utils/mongoose");
 mongoose.plugin(slug);
 
 const Product = new Schema({
-    name: {type: String, unique: true, required: true},
+    name: {type: String, required: false},
     description: {type: String},
-<<<<<<< Updated upstream
     seller_price: {type: Number, required: true},
     images: [{type: String, required: true}],
     options: {type: Array},
     bundle: [{type: String}],
     tags: {type: Array, required: true},
-=======
     sellPrice: {type: Number, required: false},
     images: [],
     variants: [],
     bundle: [],
     tags: {type: Array, required: false},
->>>>>>> Stashed changes
     slug: {type: String, unique: true, slug: 'name'},
-    category_id: {type: Schema.Types.ObjectId, required: true},
-    seller_id: {type: Schema.Types.ObjectId, required: true},
-
+    category_id: {type: Schema.Types.ObjectId, required: false},
+    seller_id: {type: Schema.Types.ObjectId, required: false},
 }, {timestamps: true})
 
 Product.statics.createProduct = async function (product) {
-<<<<<<< Updated upstream
-    return {name, parent};
-=======
+
     try {
         const p = await this.create({...product});
         return p;
@@ -47,7 +41,10 @@ Product.statics.getProductById = async function (id) {
         console.log(error);
     }
     return null;
->>>>>>> Stashed changes
 }
 
+Product.statics.getAll = async function (category) {
+    // return products[0];
+    return null;
+}
 module.exports = mongoose.model('Product', Product);
