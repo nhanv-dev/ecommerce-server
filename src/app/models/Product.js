@@ -1,13 +1,19 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 const slug = require('mongoose-slug-generator');
+const {mongooseToObject} = require("../../utils/mongoose");
 
 mongoose.plugin(slug);
 
 const Product = new Schema({
     name: {type: String, required: false},
     description: {type: String},
-    sell_price: {type: Number, required: false},
+    seller_price: {type: Number, required: true},
+    images: [{type: String, required: true}],
+    options: {type: Array},
+    bundle: [{type: String}],
+    tags: {type: Array, required: true},
+    sellPrice: {type: Number, required: false},
     images: [],
     variants: [],
     bundle: [],
@@ -18,6 +24,7 @@ const Product = new Schema({
 }, {timestamps: true})
 
 Product.statics.createProduct = async function (product) {
+
     try {
         const p = await this.create({...product});
         return p;
@@ -27,7 +34,12 @@ Product.statics.createProduct = async function (product) {
 }
 
 Product.statics.getProductById = async function (id) {
-    // return products[0];
+    try {
+        const product = await this.findOne({_id: id});
+        return new mongooseToObject(product);
+    } catch (error) {
+        console.log(error);
+    }
     return null;
 }
 

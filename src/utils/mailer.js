@@ -1,0 +1,54 @@
+const nodeMailer = require("nodemailer");
+const config = require("../config/email");
+
+class Mailer {
+    async transporter() {
+        return nodeMailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false,
+            requireTLS: true,
+            auth: {
+                user: config.emailUser,
+                pass: config.emailPassword
+            }
+        });
+    }
+
+    async resetPassword(username, email, newPass) {
+        const transporter = await this.transporter();
+        const mailOptions = {
+            from: config.emailUser,
+            to: email,
+            subject: 'For reset password',
+            html: '<p> Mật khẩu được cấp lại cho tài khoản ' + username + ' là <strong>' + newPass + '</strong> </p><br>'
+                + '(<span style="color:red;">*</span>) Lưu ý: không được chia sẻ thông tin tài khoản và mật khẩu cho người khác.'
+        }
+        await transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log("Mail has been sent:- ", info.response);
+            }
+        })
+    }
+
+    async activeAccount(username, email, token) {
+        const transporter = await this.transporter();
+        const mailOptions = {
+            from: config.emailUser,
+            to: email,
+            subject: 'For reset password',
+            html: '<p>Vui lòng nhấn vào link để kích hoạt tài khoản <a href="http://localhost:8080/api/v1/users/active-account?token=' + token + '">' + username + '</a></p>'
+        }
+        await transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log("Mail has been sent:- ", info.response);
+            }
+        })
+    }
+}
+
+module.exports = new Mailer;
