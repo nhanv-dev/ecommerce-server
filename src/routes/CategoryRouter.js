@@ -3,8 +3,9 @@ const router = require("express").Router();
 
 router
     .get("/", categoryController.findAll)
-    .get("/slug/:slug", categoryController.findBySlug)
-    .get("/:id", categoryController.findOne)
+    .get("/parents", categoryController.findParent)
+    .get("/children", categoryController.findChildren)
+    .get("/:slug", categoryController.findBySlug)
     .post("/", categoryController.save)
     .put("/", categoryController.update)
     .put("/:id", categoryController.update)

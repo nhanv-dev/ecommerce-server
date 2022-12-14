@@ -32,7 +32,7 @@ class QuestionController {
             console.log(productId, page)
             const options = {page: page || 1, limit: 10,};
             const questions = await Question.findByProductId({productId, ...options})
-            return res.status(200).json(questions);
+            return res.status(200).json({success: true, questions});
         } catch (err) {
             res.status(500).json(err);
         }

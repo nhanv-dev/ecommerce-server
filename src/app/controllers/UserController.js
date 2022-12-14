@@ -12,29 +12,18 @@ const Mailer = require("../../utils/mailer");
 class UserController {
 
     async findOne(req, res, next) {
-
-        await User.findOne({id: req.params.id}).then(async (user) => {
-            const data = await mongooseToObject(user);
-            res.send(data);
-        }).catch(next)
-
+        const user = await User.findOne({id: req.params.id})
+        return res.status(200).json({success: true, user});
     }
 
     async create(req, res) {
-        // try {
-        //     const {firstName, lastName, email, username, password} = req.body;
-        //     if (!firstName || !lastName || !email || !username || !password) return res.status(200).json({
-        //         success: false,
-        //         message: "Create user fail"
-        //     });
-        //     const token = randomstring.generate();
-        //     await User.createUser(firstName, lastName, username, password, email, User.getUserTypes().CONSUMER);
-        //     await User.updateOne({email: email}, {$set: {token: token}});
-        //     await Mailer.activeAccount(username, email, token);
-        //     return res.status(200).json({success: true});
-        // } catch (error) {
-        //     return res.status(500).json({success: false, error: error});
-        // }
+        try {
+            // const user = await User.createUser({...req.body});
+            const user = await User.createUser(userExample);
+            return res.status(200).json({success: true, user});
+        } catch (error) {
+            return res.status(500).json({success: false, error: error});
+        }
     }
 
     async update(req, res) {
@@ -98,6 +87,18 @@ class UserController {
         }
 
     }
+}
+
+const userExample = {
+    username: 'pigeon',
+    password: '123',
+    fullName: 'Pigeon',
+    email: 'pigeonvnofficial@gmail.com',
+    address: 'Ấp Trạm Bơm, P.Tân Phú Trung, Q.Củ Chi, Tp. Hồ Chí Minh',
+    phone: '',
+    isShop: true,
+    isAdmin: false,
+    isActive: true,
 }
 
 module.exports = new UserController
