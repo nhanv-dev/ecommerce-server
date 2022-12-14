@@ -5,7 +5,7 @@ const router = require("express").Router();
 router
     .get("/token", verifyToken, userController.findOne)
     .get("/:id", userController.findOne)
-    .post("/create", userController.create)
+    .post("/", userController.create)
     .put("/update", userController.update)
     .delete("/delete", userController.findOne)
     .post("/account-register", userController.registerAccount)

@@ -60,7 +60,25 @@ class CategoryController {
             const category = await Category.getBySlug(slug);
             return res.status(200).json({success: true, category});
         } catch (error) {
-            console.log(error)
+            return res.status(500).json({success: false, error: error});
+        }
+    }
+
+    async findChildren(req, res) {
+        try {
+            const {parentId} = req.query;
+            const categories = await Category.find({parentId});
+            return res.status(200).json({success: true, categories});
+        } catch (error) {
+            return res.status(500).json({success: false, error: error});
+        }
+    }
+
+    async findParent(req, res) {
+        try {
+            const categories = await Category.find({parentId: null});
+            return res.status(200).json({success: true, categories});
+        } catch (error) {
             return res.status(500).json({success: false, error: error});
         }
     }
