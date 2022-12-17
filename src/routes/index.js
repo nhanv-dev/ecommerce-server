@@ -5,6 +5,7 @@ function Router(app) {
     app.use('/api/v1/shops', require('./ShopRouter'))
     app.use('/api/v1/auth', require('./AuthRouter'))
     app.use('/api/v1/questions', require('./QuestionRouter'))
+    app.use('/api/v1/answers', require('./AnswerRouter'))
     app.use('/api/v1/carts', require('./CartRouter'))
 }
 

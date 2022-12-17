@@ -5,7 +5,6 @@ const verifyToken = (req, res, next) => {
     if (authHeader) {
         const token = authHeader.split(" ")[1];
         jwt.verify(token, 'RESTFULAPIs', (err, user) => {
-            console.log(err)
             if (err) return res.status(403).json({success: false, message: "Token is not valid!"});
             req.user = user;
             req.token = token;

@@ -1,7 +1,10 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 const slug = require('mongoose-slug-generator');
-const {mongooseToObject} = require("../../utils/mongoose");
+const ProductOption = require('../models/ProductOption');
+const ProductOptionValue = require('../models/ProductOptionValue');
+const ProductCombination = require('../models/ProductCombination');
+const {mongooseToObject, multipleMongooseToObject} = require("../../utils/mongoose");
 
 mongoose.plugin(slug);
 
@@ -40,5 +43,22 @@ Product.statics.findAll = async function (category) {
 Product.statics.findByShop = async function (shop) {
     return await this.find({shopId: shop._id});
 }
+Product.statics.findDetail = async function (product) {
+    const payload = {}
+    const combinations = await multipleMongooseToObject(await ProductCombination.find({productId: product._id.toString()}));
+    payload.combinations = [...combinations];
+    const productOptions = await multipleMongooseToObject(await ProductOption.find({productId: product._id.toString()}));
+    payload.options = [...productOptions.map(option => ({
+        _id: option._id.toString(),
+        name: option.name,
+        values: []
+    }))];
+    const productOptionsValues = await multipleMongooseToObject(await ProductOptionValue.find({optionId: {$in: [...productOptions].map(option => (option._id))}}))
+    productOptionsValues.forEach(item => {
+        const index = payload.options.findIndex(option => option._id === item.optionId.toString());
+        if (index !== -1) payload.options[index].values.push(item);
 
+    })
+    return payload;
+}
 module.exports = mongoose.model('Product', Product);

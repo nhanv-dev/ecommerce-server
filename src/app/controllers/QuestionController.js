@@ -1,36 +1,29 @@
 const Question = require('../models/Question');
+const jwt = require("jsonwebtoken");
 
 class QuestionController {
 
     async saveQuestion(req, res) {
         try {
-            const {user} = req;
+            const payload = {userId: null};
+            const authHeader = req.headers.token;
+            if (authHeader) {
+                await jwt.verify(authHeader.split(" ")[1], 'RESTFULAPIs', (err, user) => {
+                    if (!err) payload.userId = user._id;
+                }, null);
+            }
             const {productId, content} = req.body;
-            console.log(user, productId, content)
-            const question = await Question.saveQuestion({userId: user._id, productId, content});
-            return res.status(200).json({question});
+            const question = await Question.saveQuestion({userId: payload.userId, productId, content});
+            return res.status(200).json({success: true, question});
         } catch (err) {
             res.status(500).json(err);
         }
     }
 
-    async saveAnswer(req, res) {
-        try {
-            const {user} = req;
-            const {productId, content} = req.body;
-            console.log(user, productId, content)
-            // const question = await Question.save({});
-            return res.status(200).json({user});
-        } catch (err) {
-            res.status(500).json(err);
-        }
-    }
-
-    async findAll(req, res) {
+    async findByProductId(req, res) {
         try {
             const {productId, page} = req.query;
-            console.log(productId, page)
-            const options = {page: page || 1, limit: 10,};
+            const options = {page: page || 1, limit: 12,};
             const questions = await Question.findByProductId({productId, ...options})
             return res.status(200).json({success: true, questions});
         } catch (err) {

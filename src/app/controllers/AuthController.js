@@ -54,20 +54,33 @@ class AuthController {
                     _id: user._id,
                     username: user.username,
                     fullName: user.fullName,
+                    avatar: user.avatar,
                     email: user.email,
                     isShop: user.isShop,
                     isAdmin: user.isAdmin,
                 }
             };
+            let accessToken = jwt.sign({
+                ...payload.user,
+                shopId: payload?.shop?._id
+            }, 'RESTFULAPIs', {expiresIn: '2h'});
+
             if (user.isShop) {
                 const shop = await mongooseToObject(await Shop.findByAccountId(payload.user._id));
                 if (shop) payload.shop = shop
+                accessToken = jwt.sign({
+                    ...payload.user,
+                    shopId: payload?.shop?._id
+                }, 'RESTFULAPIs', {expiresIn: '2h'});
+                return res.status(200).json({
+                    accessToken,
+                    user: {...payload.user},
+                    shop: {...payload.shop}
+                });
             }
-            const accessToken = jwt.sign({...payload.user, shopId: payload.shop._id}, 'RESTFULAPIs', {expiresIn: '2h'});
             return res.status(200).json({
                 accessToken,
                 user: {...payload.user},
-                shop: {...payload.shop}
             });
         } catch (err) {
             res.status(500).json(err);
