@@ -6,6 +6,7 @@ mongoose.plugin(slug);
 
 const Answer = new Schema({
     shopId: {type: Schema.Types.ObjectId, required: true},
+    questionId: {type: Schema.Types.ObjectId, required: true},
     productId: {type: Schema.Types.ObjectId, required: true},
     content: {type: String, trim: true, required: true},
     isDisplay: {type: Boolean, default: true},
