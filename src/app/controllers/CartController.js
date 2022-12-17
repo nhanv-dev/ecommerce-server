@@ -17,7 +17,6 @@ class CartController {
                         const cd = await new mongooseToObject(cartDetail);
                         const ucd = await CartDetail.updateCartDetail(id, req.body.id, cd.quantity + 1);
                     }
-                    console.log(cartDetail, data)
                     return res.status(200).json({
                         success: true,
                         message: "Updated cart successfull",

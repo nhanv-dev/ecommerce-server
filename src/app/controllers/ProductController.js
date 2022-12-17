@@ -102,7 +102,7 @@ class ProductController {
     async findOne(req, res) {
         try {
             const {id, slug, detail} = req.query;
-            const payload = {product: {}, category: {}, combinations: [], options: []};
+            let payload = {product: {}, category: {}, combinations: [], options: []};
             const product = await mongooseToObject(await Product.findOne({id, slug}));
             payload.product = product;
             const subCategory = await mongooseToObject(await Category.findOne({_id: product.categoryId}));
@@ -112,20 +112,8 @@ class ProductController {
                 child: subCategory || null
             }
             if (detail) {
-                const combinations = await multipleMongooseToObject(await ProductCombination.find({productId: product._id.toString()}));
-                payload.combinations = [combinations];
-                const productOptions = await multipleMongooseToObject(await ProductOption.find({productId: product._id.toString()}));
-                payload.options = [...productOptions.map(option => ({
-                    _id: option._id.toString(),
-                    name: option.name,
-                    values: []
-                }))];
-                const productOptionsValues = await multipleMongooseToObject(await ProductOptionValue.find({optionId: {$in: [...productOptions].map(option => (option._id))}}))
-                productOptionsValues.forEach(item => {
-                    const index = payload.options.findIndex(option => option._id === item.optionId.toString());
-                    if (index !== -1) payload.options[index].values.push(item);
-
-                })
+                const detail = await Product.findDetail(product);
+                payload = {...payload, ...detail}
             }
             return res.status(200).json({success: true, ...payload});
         } catch (error) {

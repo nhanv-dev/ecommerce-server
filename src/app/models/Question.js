@@ -5,7 +5,7 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 mongoose.plugin(mongoosePaginate);
 
 const Question = new Schema({
-    userId: {type: Schema.Types.ObjectId, required: true},
+    userId: {type: Schema.Types.ObjectId},
     productId: {type: Schema.Types.ObjectId, required: true},
     content: {type: String, trim: true, required: true},
     isDisplay: {type: Boolean, default: true},
@@ -15,7 +15,8 @@ const Question = new Schema({
 Question.statics.findByProductId = async function ({productId, page, limit}) {
     if (!limit) limit = 10;
     if (!page) page = 1;
-    return this.find({productId, isDisplay: true}).limit(limit);
+    console.log(productId)
+    return await this.find({productId, isDisplay: true}).limit(limit);
 }
 
 Question.statics.saveQuestion = async function (question) {
