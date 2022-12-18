@@ -69,6 +69,16 @@ class ShopController {
             return res.status(500).json({success: false, error: error});
         }
     }
+
+    async findProductsByShopId(req, res) {
+        try {
+            const shop = await mongooseToObject(await Shop.findOne({_id: req.query.shopId}));
+            const products = await Product.findByShop({...shop});
+            return res.status(200).json({success: true, products});
+        } catch (error) {
+            return res.status(500).json({success: false, error: error});
+        }
+    }
 }
 
 const shopExample = {
