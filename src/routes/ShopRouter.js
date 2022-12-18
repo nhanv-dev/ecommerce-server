@@ -5,7 +5,8 @@ const router = require("express").Router();
 router
     .get("/detail", verifyTokenShop, shopController.findByAccountId)
     .get("/product", shopController.findRelatedByProductId)
-    .get("/products", verifyToken, shopController.findProducts)
+    .get("/products", verifyTokenShop, shopController.findProducts)
+    .get("/v-products",  shopController.findProductsByShopId)
     .get("/:slug", shopController.findBySlug)
     .get("/", shopController.findAll)
     .post("/", shopController.save)
