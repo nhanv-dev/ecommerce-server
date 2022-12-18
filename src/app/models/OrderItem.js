@@ -4,14 +4,13 @@ const slug = require('mongoose-slug-generator');
 
 mongoose.plugin(slug);
 
-const Category = new Schema({
-    name: {type: String, unique: true},
-    slug: {type: String, unique: true, slug: 'name'},
-    parent: Schema.Types.ObjectId,
+const OrderItem = new Schema({
+    orderID: {type: Schema.Types.ObjectId, required: true},
+    cartID: {type: Schema.Types.ObjectId},
 }, {timestamps: true});
 
 
-Category.statics.getAll = async function (limit) {
+OrderItem.statics.getAll = async function (limit) {
     const list = [];
     const parents = await this.find({parent: null}).limit(limit);
     list.push(...parents)
@@ -22,33 +21,24 @@ Category.statics.getAll = async function (limit) {
     return list;
 }
 
-Category.statics.createCategory = async function (name, parent) {
-    if (!name) throw ({error: 'Name of category is not empty'});
-    const isExist = await this.findOne({name});
-    if (isExist) throw ({error: 'Category is exist in database'});
-    return await this.create({name, parent});
+OrderItem.statics.createOrderItem = async function (orderID, cartID) {
+    return await this.create({orderID, cartID});
 }
 
-Category.statics.updateCategory = async function (id, name, parent) {
+OrderItem.statics.updateOrderItem = async function (id, name, parent) {
     if (!name) throw ({error: 'Name of category is not empty'});
     return await this.update({name, parent});
 }
 
-Category.statics.deleteCategory = async function (id) {
+OrderItem.statics.deleteOrderItem = async function (id) {
     if (!name) throw ({error: 'Name of category is not empty'});
     return await this.create({id});
 }
 
-Category.statics.getById = async function (id) {
-    const category = await this.findOne(id);
-    if (!category) throw ({error: 'No category with this id found'});
-    return category;
+OrderItem.statics.getById = async function (id) {
+    const orderItem = await this.findOne(id);
+    if (!orderItem) throw ({error: 'No category with this id found'});
+    return orderItem;
 }
 
-Category.statics.getBySlug = async function (slug) {
-    const category = await this.findOne({slug});
-    if (!category) throw ({error: 'No category with this slug found'});
-    return category;
-}
-
-module.exports = mongoose.model('Category', Category);
+module.exports = mongoose.model('OrderItem', OrderItem);

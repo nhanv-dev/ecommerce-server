@@ -5,7 +5,7 @@ const Category = require("../models/Category");
 const jwt = require('jsonwebtoken');
 const config = require("../../config/email");
 const nodeMailer = require("nodemailer");
-const randomstring = require("randomstring");
+const randomString = require('randomstring');
 const Mailer = require("../../utils/mailer");
 
 
@@ -73,19 +73,33 @@ class UserController {
             if (!user) {
                 return res.status(200).json({success: false, message: "Email not exist"});
             } else {
-                const data = await mongooseToObject(user);
-                const randomString = randomstring.generate();
-                await User.updateOne({email: email}, {$set: {password: randomString}});
-                await Mailer.resetPassword(data.username, data.email, randomString);
-                return res.status(200).json({
-                    success: true,
-                    message: "Please check your inbox of mail."
-                });
+                const confirmCode = Math.floor(Math.random() * (999999 - 111111)) + 111111;
+                await Mailer.sendConfirmCode(user.username, user.email, confirmCode);
+                await User.updateOne({email: email}, {$set: {password: confirmCode}});
+                return res.status(200).json({success: true, message: "Please check your inbox of mail."});
             }
         } catch (error) {
             return res.status(500).json({success: false, error: error});
         }
+    }
 
+    async resetPassword(req, res) {
+        try {
+            const {email, confirmCode} = req.body;
+            if (!email) return res.status(200).json({success: false, message: "Email not empty"});
+            if (!confirmCode) return res.status(200).json({success: false, message: "Confirm Code not empty"});
+            const user = await User.findOne({email});
+            if (!user) return res.status(200).json({success: false, message: "User not exist"});
+            if (confirmCode === user.password) {
+                const newPass = randomString.generate();
+                await User.updateOne({email: email}, {$set: {password: newPass}});
+                await Mailer.resetPassword(user.username, user.email, newPass);
+                return res.status(200).json({success: true, message: "Please check your inbox of mail."});
+            }
+            return res.status(200).json({success: false, message: "Confirmation code is incorrect."});
+        } catch (error) {
+            return res.status(500).json({success: false, error: error});
+        }
     }
 }
 

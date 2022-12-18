@@ -10,6 +10,7 @@ router
     .delete("/delete", userController.findOne)
     .post("/account-register", userController.registerAccount)
     .post("/forget-password", userController.forgetPassword)
+    .post("/confirm-password", userController.resetPassword)
     .put("/active-account", userController.activeAccount)
 
 
