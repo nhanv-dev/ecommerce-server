@@ -1,5 +1,6 @@
 const config = {
-    emailUser: 'nguyendev2001@gmail.com',
-    emailPassword: 'ilmofrmdsikybtri'
+    // Email and Password of personal
+    emailUser: '19130154@st.hcmuaf.edu.vn',
+    emailPassword: 'monwbotzfwxmwrjn'
 }
 module.exports = config;

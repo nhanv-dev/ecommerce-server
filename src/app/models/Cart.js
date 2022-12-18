@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const {mongooseToObject} = require("../../utils/mongoose");
 const Schema = mongoose.Schema;
 
 const Cart = new Schema({
@@ -9,9 +8,8 @@ const Cart = new Schema({
     total: {type: Number, required: true}
 }, {timestamps: true});
 
-Cart.statics.saveCart = async function (cart) {
-    if (!cart.customerId) throw ({error: 'Client not empty'});
-    return await this.create({...cart});
+Cart.statics.saveCart = async function (customerId, createdAt, total) {
+    return await this.create({customerId, createdAt, total});
 }
 Cart.statics.getCartByUserId = async function (id) {
     return await this.findOne({customerId: id});
@@ -20,4 +18,5 @@ Cart.statics.updateCart = async function (userId, total) {
     await this.updateOne({customerId: userId}, {$set: {total: total}});
     return await this.getCartByUserId(userId);
 }
+
 module.exports = mongoose.model('Cart', Cart);

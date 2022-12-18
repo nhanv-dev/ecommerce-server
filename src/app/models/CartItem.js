@@ -9,13 +9,14 @@ const CartItem = new Schema({
     discount: {type: Schema.Types.ObjectId, required: false}
 });
 
-CartItem.statics.saveCartItem = async function (cartItem) {
-    return await this.create({...cartItem});
+CartItem.statics.saveCartItem = async function (cartId, productId, quantity, price) {
+    return await this.create({cartId, productId, quantity, price});
 }
 
 CartItem.statics.getCartItemById = async function (cartId, productId) {
     return await this.findOne({cartId: cartId, productId: productId});
 }
+
 CartItem.statics.updateCartItem = async function (cartId, productId, quantity) {
     await this.updateOne({cartId: cartId, productId: productId}, {$set: {quantity: quantity}});
     return await this.findOne({cartId: cartId, productId: productId});
