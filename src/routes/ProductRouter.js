@@ -8,6 +8,7 @@ router
     .delete("/:id", verifyTokenShop, productController.findOne)
     .get("/", productController.findOne)
     .get("/all", productController.sortNew)
+    .get("/cate-id/:id", productController.findCateId)
 
 
 module.exports = router;
