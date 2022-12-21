@@ -62,4 +62,7 @@ Product.statics.findDetail = async function (product) {
     })
     return payload;
 }
+Product.statics.findByCategoryId = async function (categoryId) {
+
+}
 module.exports = mongoose.model('Product', Product);

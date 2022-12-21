@@ -121,13 +121,16 @@ class ProductController {
         }
     }
 
-    async getItemsNew(req, res) {
+    async findCateId(req, res) {
         try {
-
+            const categoryId = req.params.id;
+            const products = await Product.find({categoryId});
+            return res.status(200).json({success: true, product: products});
         } catch (error) {
             return res.status(500).json({success: false, error: error});
         }
     }
+
 
 }
 
