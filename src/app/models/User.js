@@ -11,6 +11,7 @@ const User = new Schema({
     email: {type: String},
     phone: {type: String},
     address: {type: String},
+    avatar: {type: String},
     token: {type: String},
     isShop: {type: Boolean, default: false},
     isAdmin: {type: Boolean, default: false},

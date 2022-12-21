@@ -42,7 +42,6 @@ class AuthController {
         }
     }
 
-
     async login(req, res) {
         try {
             const user = await mongooseToObject(await User.findOne({username: req.body.username}));
@@ -100,6 +99,25 @@ class AuthController {
         }
     }
 
+    async checkInvalidToken(req, res) {
+        try {
+            const {user, token} = req;
+            const payload = {user, token}
+            if (user.isShop) {
+                const shop = await mongooseToObject(await Shop.findByAccountId(payload.user._id));
+                if (shop) payload.shop = shop
+                return res.status(200).json({
+                    accessToken: payload.token,
+                    user: {...payload.user},
+                    shop: {...payload.shop}
+                });
+            }
+            return res.status(200).json({accessToken: req.token, user: req.user});
+        } catch (err) {
+            console.log(err)
+            res.status(500).json(err);
+        }
+    }
 }
 
 module.exports = new AuthController

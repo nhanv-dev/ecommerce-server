@@ -1,5 +1,5 @@
 const User = require('../models/User')
-
+const UserAddress = require('../models/UserAddress')
 const {multipleMongooseToObject, mongooseToObject} = require('../../utils/mongoose')
 const Category = require("../models/Category");
 const jwt = require('jsonwebtoken');
@@ -10,11 +10,6 @@ const Mailer = require("../../utils/mailer");
 
 
 class UserController {
-
-    async findOne(req, res, next) {
-        const user = await User.findOne({id: req.params.id})
-        return res.status(200).json({success: true, user});
-    }
 
     async create(req, res) {
         try {
@@ -35,6 +30,16 @@ class UserController {
         } catch (error) {
             return res.status(500).json({success: false, error: error});
         }
+    }
+
+    async findInformation(req, res) {
+        try {
+            const user = await User.findOne({id: req.user._id})
+            return res.status(200).json({success: true, user});
+        } catch (error) {
+            return res.status(500).json({success: false, error: error});
+        }
+
     }
 
     async registerAccount(req, res) {
@@ -101,18 +106,45 @@ class UserController {
             return res.status(500).json({success: false, error: error});
         }
     }
-}
 
-const userExample = {
-    username: 'pigeon',
-    password: '123',
-    fullName: 'Pigeon',
-    email: 'pigeonvnofficial@gmail.com',
-    address: 'Ấp Trạm Bơm, P.Tân Phú Trung, Q.Củ Chi, Tp. Hồ Chí Minh',
-    phone: '',
-    isShop: true,
-    isAdmin: false,
-    isActive: true,
+    async findAddresses(req, res) {
+        try {
+            const {user} = req;
+            const addresses = await multipleMongooseToObject(await UserAddress.find({userId: user._id}))
+            const notDefaultAddress = [...addresses].filter(address => !address.isDefault)
+            const defaultAddress = [...addresses].filter(address => address.isDefault)
+            const payload = [...defaultAddress, ...notDefaultAddress]
+            return res.status(200).json({success: true, addresses: payload});
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({success: false, error: error});
+        }
+    }
+
+    async saveAddresses(req, res) {
+        try {
+            const {user} = req;
+            const address = await mongooseToObject(await UserAddress.saveAddress({
+                userId: user._id,
+                ...req.body
+            }))
+            return res.status(200).json({success: true, address});
+        } catch (error) {
+            return res.status(500).json({success: false, error: error});
+        }
+    }
+
+    async setDefaultAddress(req, res) {
+        try {
+            const user = req.user;
+            const {_id, isDefault} = req.body;
+            const address = await mongooseToObject(await UserAddress.setDefault({_id, isDefault, userId: user._id}))
+            return res.status(200).json({success: true, address});
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({success: false, error: error});
+        }
+    }
 }
 
 module.exports = new UserController
