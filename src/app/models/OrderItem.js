@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const slug = require('mongoose-slug-generator');
 
-mongoose.plugin(slug);
 
 const OrderItem = new Schema({
-    orderID: {type: Schema.Types.ObjectId, required: true},
-    cartID: {type: Schema.Types.ObjectId},
+    orderId: {type: Schema.Types.ObjectId, required: true},
+    productId: {type: Schema.Types.ObjectId, required: true},
+    combinationId: {type: Schema.Types.ObjectId, required: false},
+    price: {type: Number, required: true},
+    quantity: {type: Number, required: true}
 }, {timestamps: true});
 
 

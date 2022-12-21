@@ -1,17 +1,35 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const slug = require('mongoose-slug-generator');
-
-mongoose.plugin(slug);
 
 const Order = new Schema({
-    customerId: Schema.Types.ObjectId,
-    quantity: {type: Number, required: true},
-    amount: {type: Number, required: true},
-    exportDate: {type: Date, required: true}
+    userId: {type: Schema.Types.ObjectId, required: true},
+    addressId: {type: Schema.Types.ObjectId, required: true},
+    note: {type: String, required: false},
+    paymentMethod: {type: String, required: true},
+    shippingMethod: {type: String, required: true},
+    total: {type: Number, required: true},
+    status: {type: String, required: false, default: 'Processing'},
 }, {timestamps: true});
 
 
+Order.statics.saveOrder = async function (order) {
+    return await this.create({
+        userId: order.userId,
+        addressId: order.addressId,
+        note: order.note,
+        paymentMethod: order.paymentMethod,
+        shippingMethod: order.shippingMethod,
+        total: order.total,
+    });
+}
+Order.statics.updateOrder = async function (exportDate) {
+    // if (!name) throw ({error: 'Name of order is not empty'});
+    // return await this.update({name, exportDate});
+}
+Order.statics.deleteOrder = async function (id) {
+    // if (!name) throw ({error: 'Name of order is not empty'});
+    // return await this.create({id});
+}
 Order.statics.getAll = async function (limit) {
     const list = [];
     const parents = await this.find({parent: null}).limit(limit);
@@ -22,24 +40,6 @@ Order.statics.getAll = async function (limit) {
     }
     return list;
 }
-
-Order.statics.createOrder = async function (customerId, quantity, amount, exportDate) {
-    if (!customerId) throw ({error: 'Name of order is not empty'});
-    const isExist = await this.findOne({customerId});
-    if (isExist) throw ({error: 'Order is exist in database'});
-    return await this.create({customerId, quantity, amount, exportDate});
-}
-
-Order.statics.updateOrder = async function (exportDate) {
-    // if (!name) throw ({error: 'Name of order is not empty'});
-    // return await this.update({name, exportDate});
-}
-
-Order.statics.deleteOrder = async function (id) {
-    // if (!name) throw ({error: 'Name of order is not empty'});
-    // return await this.create({id});
-}
-
 Order.statics.getById = async function (id) {
     // const order = await this.findOne(id);
     // if (!order) throw ({error: 'No order with this id found'});

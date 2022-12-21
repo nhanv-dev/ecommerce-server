@@ -15,8 +15,12 @@ const Question = new Schema({
 Question.statics.findByProductId = async function ({productId, page, limit}) {
     if (!limit) limit = 10;
     if (!page) page = 1;
-    console.log(productId)
     return await this.find({productId, isDisplay: true}).limit(limit);
+}
+Question.statics.findByUserId = async function ({userId, page, limit}) {
+    if (!limit) limit = 10;
+    if (!page) page = 1;
+    return await this.find({userId, isDisplay: true}).limit(limit);
 }
 
 Question.statics.saveQuestion = async function (question) {
