@@ -15,7 +15,7 @@ const User = new Schema({
     token: {type: String},
     isShop: {type: Boolean, default: false},
     isAdmin: {type: Boolean, default: false},
-    isActive: {type: Boolean, default: true},
+    isActive: {type: Boolean, default: false},
     slug: {type: String, slug: 'username', unique: true},
 }, {timestamps: true})
 

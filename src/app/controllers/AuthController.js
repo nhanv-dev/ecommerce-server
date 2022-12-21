@@ -3,7 +3,6 @@ const Shop = require('../models/Shop');
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 const config = require("../../config/email");
-const randomstring = require("randomstring");
 const Mailer = require("../../utils/mailer");
 const {mongooseToObject} = require("../../utils/mongoose");
 
@@ -15,14 +14,10 @@ class AuthController {
             const {fullName, username, password, email} = req.body;
             const isExist = await User.findOne({username});
             if (isExist) return res.status(400).json({success: false, message: "Username already exist"});
-            // const token = randomstring.generate();
-            const newUser = new User({
-                fullName, username, password: CryptoJS.MD5(password).toString(), email,
-                // token: token
-            });
+            const newUser = new User({fullName, username, password: CryptoJS.MD5(password).toString(), email});
             const savedUser = await newUser.save();
-            // await Mailer.activeAccount(username, email, token);
-            res.status(200).json({success: true, user: savedUser});
+            await Mailer.sendConfirmCode(savedUser.username, savedUser.email, Math.floor(Math.random() * (999999 - 111111)) + 111111);
+            res.status(200).json({success: true, user: {'id': savedUser._id.toString()}});
         } catch (err) {
             res.status(500).json(err);
         }
