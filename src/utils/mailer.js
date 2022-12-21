@@ -20,9 +20,9 @@ class Mailer {
         const mailOptions = {
             from: config.emailUser,
             to: email,
-            subject: 'Confirm code',
-            html: '<p> Đây là mã xác nhận được cấp lại cho tài khoản ' + username + ' là <strong>' + newPass + '</strong> </p><br>'
-                + '(<span style="color:red;">*</span>) Lưu ý: Vui lòng nhập chính xác để chúng toai cấp lại mật khẩu cho bạn, nếu không phải bạn vui lòng bỏ vào thùng rác.Thanks you so much!!!'
+            subject: '[No-Reply]',
+            html: '<p> Đây là mã xác nhận được cấp lại cho tài khoản <span style="color:blue;"> ' + username + '</span> là <strong>' + newPass + '</strong> </p><br>'
+                + '(<span style="color:red;">*</span>) Lưu ý: Nếu không phải bạn vui lòng bỏ vào thùng rác.Thanks you so much!!!'
         }
         await transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
