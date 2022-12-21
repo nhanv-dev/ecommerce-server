@@ -90,6 +90,15 @@ class ProductController {
         }
     }
 
+    async findAll(req, res) {
+        try {
+            const products = await Product.find();
+            return res.status(200).json({success: true, products});
+        } catch (error) {
+            return res.status(500).json({success: false, error: error});
+        }
+    }
+
     async sortNew(req, res) {
         try {
             const products = await Product.find().sort({'createdAt': 'desc'});

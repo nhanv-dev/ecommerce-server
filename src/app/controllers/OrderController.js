@@ -12,6 +12,19 @@ const async = require("async");
 
 class OrderController {
 
+    async cancelOrder(req, res) {
+        try {
+            const {data} = req.body
+            const order = await mongooseToObject(await Order.findOne({_id: data.orderId}));
+            if (!order) return res.status(200).json({success: false});
+            await Order.updateOne({_id: order._id.toString()}, {$set: {status: "Cancel", note: data.note}});
+            return res.status(200).json({success: true, orderId: order._id.toString()});
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({success: false, error: error});
+        }
+    }
+
     async addOrder(req, res) {
         try {
             const user = req.user;
