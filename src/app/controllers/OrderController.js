@@ -30,7 +30,18 @@ class OrderController {
                         price,
                     }
                 })
-            ))
+            ));
+            items.map(async item => {
+                const combinationId = item.combinationId.toString();
+                const productCombination = await ProductCombination.findOne({_id: combinationId});
+                const stock = parseInt(productCombination.stock) - parseInt(item.quantity);
+                await ProductCombination.updateOne({_id: combinationId}, {$set: {stock: stock}});
+            });
+            await CartItem.deleteMany({
+                cartId: {$in: [...items.map(item => item.cartId)]},
+                productId: {$in: [...items.map(item => item.productId)]},
+                combinationId: {$in: [...items.map(item => item.combinationId)]},
+            });
             return res.status(200).json({success: true, order: {...order, items: [...orderItems]}});
         } catch (error) {
             console.log(error)
