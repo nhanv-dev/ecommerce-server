@@ -3,18 +3,21 @@ const Schema = mongoose.Schema;
 
 const Order = new Schema({
     userId: {type: Schema.Types.ObjectId, required: true},
+    shopId: {type: Schema.Types.ObjectId, required: true},
     addressId: {type: Schema.Types.ObjectId, required: true},
     note: {type: String, required: false},
     paymentMethod: {type: String, required: true},
     shippingMethod: {type: String, required: true},
     total: {type: Number, required: true},
     status: {type: String, required: false, default: 'Processing'},
+    isFeedBack: {type: Boolean, default: false, required: false}
 }, {timestamps: true});
 
 
 Order.statics.saveOrder = async function (order) {
     return await this.create({
         userId: order.userId,
+        shopId: order.shopId,
         addressId: order.addressId,
         note: order.note,
         paymentMethod: order.paymentMethod,

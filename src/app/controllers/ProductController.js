@@ -121,6 +121,14 @@ class ProductController {
         }
     }
 
+    async getItemsNew(req, res) {
+        try {
+
+        } catch (error) {
+            return res.status(500).json({success: false, error: error});
+        }
+    }
+
 }
 
 module.exports = new ProductController;
