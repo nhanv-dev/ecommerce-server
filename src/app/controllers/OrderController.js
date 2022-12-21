@@ -31,24 +31,6 @@ class OrderController {
                     }
                 })
             ))
-            const cartItems = await multipleMongooseToObject(await CartItem.find({
-                cartId: {$in: [...items.map(item => item.cartId)]}
-            }));
-            cartItems.map(async cartItem => {
-                const combinationId = cartItem.combinationId;
-                const productCombination = await ProductCombination.findOne({combinationId: combinationId});
-                const quantity = parseInt(productCombination.stock) - parseInt();
-                console.log(productCombination);
-                await ProductCombination.updateOne({combinationId: combinationId}, {$set: {stock:}});
-            });
-
-            // const deleteCartItems = await multipleMongooseToObject(await CartItem.deleteMany(
-            //     cartItems.map(cartItem => {
-            //         return {
-            //             _id: cartItem._id.toString()
-            //         }
-            //     })
-            // ));
             return res.status(200).json({success: true, order: {...order, items: [...orderItems]}});
         } catch (error) {
             console.log(error)

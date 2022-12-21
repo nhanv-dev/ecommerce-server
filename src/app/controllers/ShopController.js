@@ -79,6 +79,27 @@ class ShopController {
             return res.status(500).json({success: false, error: error});
         }
     }
+
+    async searchShop(req, res) {
+        try {
+            const {searching} = req.query;
+            const shopsByName = await multipleMongooseToObject(await Shop.find({
+                name: {"$regex": searching, "$options": "i"},
+            }));
+            const shopsByAddress = await multipleMongooseToObject(await Shop.find({
+                address: {"$regex": searching, "$options": "i"}
+            }));
+            const payload = [];
+            [...shopsByName, ...shopsByAddress].forEach(shop => {
+                const isExist = [...payload].filter(item => item._id.toString() === shop._id.toString())
+                if (isExist.length === 0) payload.push(shop)
+            })
+
+            return res.status(200).json({success: true, shops: payload});
+        } catch (error) {
+            return res.status(500).json({success: false, error: error});
+        }
+    }
 }
 
 const shopExample = {
