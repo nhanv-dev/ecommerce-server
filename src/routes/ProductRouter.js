@@ -9,6 +9,7 @@ router
     .get("/", productController.findOne)
     .get("/all", productController.findAll)
     .get("/new", productController.sortNew)
+    .get("/cate-id/:id", productController.findCateId)
 
 
 module.exports = router;
