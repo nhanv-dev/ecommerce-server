@@ -92,13 +92,7 @@ class ProductController {
 
     async findAll(req, res) {
         try {
-            const currentDate = new Date();
-            // const products = await Product.find().sort([{"createdAt" :currentDate.getDate()}]);
-            // const newProduct = products.filter(item => {
-            //     if (item.createdAt.getDate() <= currentDate.getDate() && item.createdAt.getDate() > currentDate.getDate() - 3) {
-            //         return item;
-            //     }
-            // })
+            const products = await Product.find();
             return res.status(200).json({success: true, products});
         } catch (error) {
             return res.status(500).json({success: false, error: error});
