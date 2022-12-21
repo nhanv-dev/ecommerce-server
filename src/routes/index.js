@@ -8,6 +8,7 @@ function Router(app) {
     app.use('/api/v1/answers', require('./AnswerRouter'))
     app.use('/api/v1/carts', require('./CartRouter'))
     app.use('/api/v1/orders', require('./OrderRouter'))
+    app.use('/api/v1/evaluates', require('./EvaluateRouter'))
 }
 
 module.exports = Router

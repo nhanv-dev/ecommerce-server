@@ -7,7 +7,8 @@ const OrderItem = new Schema({
     productId: {type: Schema.Types.ObjectId, required: true},
     combinationId: {type: Schema.Types.ObjectId, required: false},
     price: {type: Number, required: true},
-    quantity: {type: Number, required: true}
+    quantity: {type: Number, required: true},
+    isFeedBack: {type: Boolean, default: false, required: false}
 }, {timestamps: true});
 
 
