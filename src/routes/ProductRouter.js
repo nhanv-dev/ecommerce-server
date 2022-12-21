@@ -7,7 +7,7 @@ router
     .put("/:id", verifyTokenShop, productController.update)
     .delete("/:id", verifyTokenShop, productController.findOne)
     .get("/", productController.findOne)
-    .get("/all", productController.findAll)
+    .get("/all", productController.sortNew)
 
 
 module.exports = router;
