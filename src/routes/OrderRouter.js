@@ -3,6 +3,7 @@ const {verifyToken} = require("../middlewares/verifyToken");
 const router = require("express").Router();
 
 router
+    .post('/cancel', verifyToken, orderController.cancelOrder)
     .post('/', verifyToken, orderController.addOrder)
     .get('/order-shop-id', orderController.findOrderByShopID)
     .get('/user', verifyToken, orderController.findOrderByUserId)
