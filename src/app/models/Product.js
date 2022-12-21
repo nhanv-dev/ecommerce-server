@@ -37,6 +37,7 @@ Product.statics.findBySlug = async function (slug) {
 }
 
 Product.statics.findAll = async function (category) {
+
     // return products[0];
     return null;
 }
