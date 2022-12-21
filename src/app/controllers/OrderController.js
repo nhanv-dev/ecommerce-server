@@ -55,7 +55,6 @@ class OrderController {
                 const combinationId = item.combinationId;
                 const productCombination = await ProductCombination.findOne({_id: combinationId});
                 const stock = parseInt(productCombination.stock) - parseInt(item.quantity);
-                console.log(productCombination.stock)
                 await ProductCombination.updateOne({_id: combinationId}, {$set: {stock: stock}});
             });
             await CartItem.deleteMany({
