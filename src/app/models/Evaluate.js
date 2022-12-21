@@ -7,12 +7,12 @@ const Evaluate = new Schema({
     productId: {type: Schema.Types.ObjectId, required: true},
     images: [{url: {type: String}}],
     content: {type: String},
-    starRating: {type: Number, default: 0}
+    rating: {type: Number, default: 1}
 }, {timestamps: true});
 
 
-Evaluate.statics.saveEvaluate = async function (userId, productId, images, content, starRating) {
-    return await this.create({userId, productId, images, content, starRating});
+Evaluate.statics.saveEvaluate = async function (userId, productId, images, content, rating) {
+    return await this.create({userId, productId, images, content, rating});
 }
 Evaluate.statics.findByEvaluateId = async function (productId) {
     if (!productId) throw ({error: 'Id of product is not empty'});
