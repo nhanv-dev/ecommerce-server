@@ -8,6 +8,7 @@ const UserAddress = require('../models/UserAddress');
 const Product = require('../models/Product');
 const ProductCombination = require('../models/ProductCombination');
 const {mongooseToObject, multipleMongooseToObject} = require("../../utils/mongoose");
+const async = require("async");
 
 class OrderController {
 
@@ -15,47 +16,43 @@ class OrderController {
         try {
             const user = req.user;
             const {items, address, note, paymentMethod, shippingMethod} = req.body;
-            const array = [];
-            items.forEach(item => {
+            let array = [];
+            items.map(item => {
                 const a = array.filter(obj => obj?.shop?._id === item.shop?._id)
-                if (a.length > 0) {
-                    array.forEach(obj => obj?.shop?._id === item?.shop?._id && obj.items.push({...item}))
-                } else {
-                    array.push({shop: {...item.shop}, items: [{...item}]})
-                }
-            });
-            const payload = [];
-            array.map(async obj => {
-                let total = 0;
-                obj.items.forEach(item => {
-                    total += ((item.combination?.price || item.product.basePrice) * item.quantity) * (100 - item.product.discountPercent) / 100
+                if (!a.length > 0) array.push({shop: {...item.shop}})
+            })
+            array = array.map(obj => {
+                let total = 0
+                items.filter(item => item.shop._id === obj.shop._id).forEach(item => {
+                    total += item.discountPrice;
                 });
-                const order = await mongooseToObject(await Order.saveOrder({
+                return {...obj, total}
+            });
+            const orders = await multipleMongooseToObject(await Order.insertMany([
+                ...array.map(obj => ({
                     userId: user._id,
-                    total,
+                    total: obj.total,
                     shopId: obj.shop._id.toString(),
                     note, paymentMethod, shippingMethod,
                     addressId: address._id,
-                }));
-                const orderItems = await multipleMongooseToObject(await OrderItem.insertMany(
-                    obj.items.map(item => {
-                        const price = ((item.combination?.price || item.product.basePrice) * item.quantity) * (100 - item.product.discountPercent) / 100
-                        return {
-                            orderId: order._id.toString(),
-                            productId: item.productId,
-                            combinationId: item.combinationId,
-                            quantity: item.quantity,
-                            price,
-                        }
-                    })
-                ));
-                payload.push({...order, items: [...orderItems]});
-            });
+                }))
+            ]))
+            const orderItems = await multipleMongooseToObject(await OrderItem.insertMany([
+                ...items.map(item => {
+                    const data = orders.filter(data => data.shopId.toString() === item.shop._id)[0];
+                    return {
+                        combinationId: item.combinationId,
+                        quantity: item.quantity,
+                        orderId: data._id.toString(),
+                        productId: item.productId,
+                        price: item.discountPrice,
+                    }
+                })]));
+
             items.map(async item => {
                 const combinationId = item.combinationId;
                 const productCombination = await ProductCombination.findOne({_id: combinationId});
                 const stock = parseInt(productCombination.stock) - parseInt(item.quantity);
-                console.log(productCombination.stock)
                 await ProductCombination.updateOne({_id: combinationId}, {$set: {stock: stock}});
             });
             await CartItem.deleteMany({
@@ -63,8 +60,8 @@ class OrderController {
                 productId: {$in: [...items.map(item => item.productId)]},
                 combinationId: {$in: [...items.map(item => item.combinationId)]},
             });
-            return res.status(200).json({success: true, orders: payload});
 
+            return res.status(200).json({success: true, deleteCartItem: items, orders});
         } catch (error) {
             console.log(error)
             return res.status(500).json({success: false, error: error});
@@ -123,7 +120,7 @@ class OrderController {
                 _id: {$in: [...products.map(product => product.shopId)]}
             }));
             products = products.map(product => {
-                const shop = shops.filter(item=> product.shopId.toString() === item._id.toString());
+                const shop = shops.filter(item => product.shopId.toString() === item._id.toString());
                 return {
                     ...product,
                     shop: shop.length > 0 && shop[0],
