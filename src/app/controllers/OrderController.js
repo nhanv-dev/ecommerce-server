@@ -2,29 +2,92 @@ const Order = require('../models/Order');
 const OrderItem = require('../models/OrderItem');
 const Cart = require('../models/Cart');
 const CartItem = require('../models/CartItem');
+const User = require('../models/User');
+const UserAddress = require('../models/UserAddress');
 const Product = require('../models/Product');
+const ProductCombination = require('../models/ProductCombination');
 const {mongooseToObject, multipleMongooseToObject} = require("../../utils/mongoose");
 
 class OrderController {
+
     async addOrder(req, res) {
         try {
-            const {customerId} = req.body;
-            if (!customerId) return res.status(200).json({success: false, message: "Account not empty"});
-            const cart = await Cart.getCartByUserId(customerId);
-            const cartItem = await CartItem.findOne({cartId: cart.id});
-            const order = await Order.createOrder(customerId, cartItem.quantity, cart.total, new Date());
-            const orderItem = await OrderItem.createOrderItem(order.id, cart.id);
-            return res.status(200).json({success: true, message: 'Added order success'});
+            const user = req.user;
+            const {items, total, address, note, paymentMethod, shippingMethod} = req.body;
+            const order = await mongooseToObject(await Order.saveOrder({
+                userId: user._id,
+                total, note, paymentMethod, shippingMethod,
+                addressId: address._id,
+            }));
+            const orderItems = await multipleMongooseToObject(await OrderItem.insertMany(
+                items.map(item => {
+                    const price = ((item.combination?.price || item.product.basePrice) * item.quantity) * (100 - item.product.discountPercent) / 100
+                    return {
+                        orderId: order._id.toString(),
+                        productId: item.productId,
+                        combinationId: item.combinationId,
+                        quantity: item.quantity,
+                        price,
+                    }
+                })
+            ))
+            const cartItems = await multipleMongooseToObject(await CartItem.find({
+                cartId: {$in: [...items.map(item => item.cartId)]}
+            }));
+            cartItems.map(async cartItem => {
+                const combinationId = cartItem.combinationId;
+                const productCombination = await ProductCombination.findOne({combinationId: combinationId});
+                const quantity = parseInt(productCombination.stock) - parseInt();
+                console.log(productCombination);
+                await ProductCombination.updateOne({combinationId: combinationId}, {$set: {stock:}});
+            });
+
+            // const deleteCartItems = await multipleMongooseToObject(await CartItem.deleteMany(
+            //     cartItems.map(cartItem => {
+            //         return {
+            //             _id: cartItem._id.toString()
+            //         }
+            //     })
+            // ));
+            return res.status(200).json({success: true, order: {...order, items: [...orderItems]}});
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({success: false, error: error});
+        }
+    }
+
+    async findOrderByShopID(req, res) {
+        try {
+            const {shopId} = req.query;
+            console.log(await Product.find({shopId: shopId}), shopId);
+            return res.status(200).json({success: true, message: 'get order success'});
         } catch (error) {
             return res.status(500).json({success: false, error: error});
         }
     }
 
-    async getOrderByShopID(req, res) {
+    async findOrderById(req, res) {
         try {
-            const {shopId} = req.query;
-            console.log(await Product.find({shopId: shopId}),shopId);
-            return res.status(200).json({success: true, message: 'get order success'});
+            const {id} = req.params;
+            const order = await mongooseToObject(await Order.findOne({_id: id}));
+            let orderItems = await multipleMongooseToObject(await OrderItem.find({orderId: order._id.toString()}));
+            const products = await multipleMongooseToObject(await Product.find({
+                _id: {$in: [...orderItems.map(item => item.productId)]}
+            }));
+            const combinations = await multipleMongooseToObject(await ProductCombination.find({
+                _id: {$in: [...orderItems.map(item => item.combinationId)]}
+            }));
+            orderItems = orderItems.map(item => {
+                const product = products.filter(p => item.productId.toString() === p._id.toString());
+                const combination = combinations.filter(c => item.combinationId?.toString() === c._id.toString());
+                return {
+                    ...item,
+                    product: product.length > 0 && product[0],
+                    combination: combination.length > 0 && combination[0],
+                };
+            });
+            const address = await mongooseToObject(await UserAddress.findOne({_id: order.addressId.toString()}));
+            return res.status(200).json({success: true, order: {...order, address, items: [...orderItems]}});
         } catch (error) {
             return res.status(500).json({success: false, error: error});
         }
