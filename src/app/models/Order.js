@@ -10,7 +10,8 @@ const Order = new Schema({
     shippingMethod: {type: String, required: true},
     total: {type: Number, required: true},
     status: {type: String, required: false, default: 'Processing'},
-    isFeedBack: {type: Boolean, default: false, required: false}
+    isFeedBack: {type: Boolean, default: false, required: false},
+    date: {type: Date, default: Date.now, index: true}
 }, {timestamps: true});
 
 

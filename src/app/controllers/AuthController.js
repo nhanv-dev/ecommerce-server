@@ -12,6 +12,7 @@ class AuthController {
     async register(req, res) {
         try {
             const {fullName, username, password, email} = req.body;
+            console.log(fullName, username, password, email)
             const isExist = await User.findOne({username});
             if (isExist) return res.status(400).json({success: false, message: "Username already exist"});
             const newUser = new User({fullName, username, password: CryptoJS.MD5(password).toString(), email});
