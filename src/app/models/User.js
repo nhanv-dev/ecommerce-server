@@ -12,7 +12,7 @@ const User = new Schema({
     phone: {type: String},
     address: {type: String},
     avatar: {type: String},
-    token: {type: String},
+    token: {type: Number},
     isShop: {type: Boolean, default: false},
     isAdmin: {type: Boolean, default: false},
     isActive: {type: Boolean, default: false},

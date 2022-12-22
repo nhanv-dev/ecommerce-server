@@ -16,7 +16,9 @@ class AuthController {
             if (isExist) return res.status(400).json({success: false, message: "Username already exist"});
             const newUser = new User({fullName, username, password: CryptoJS.MD5(password).toString(), email});
             const savedUser = await newUser.save();
-            await Mailer.sendConfirmCode(savedUser.username, savedUser.email, Math.floor(Math.random() * (999999 - 111111)) + 111111);
+            const token = Math.floor(Math.random() * (999999 - 111111)) + 111111;
+            await User.updateOne({email: email}, {$set: {token: token}});
+            await Mailer.sendConfirmCode(savedUser.username, savedUser.email, token);
             res.status(200).json({success: true, user: {'id': savedUser._id.toString()}});
         } catch (err) {
             res.status(500).json(err);

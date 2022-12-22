@@ -39,7 +39,6 @@ class UserController {
         } catch (error) {
             return res.status(500).json({success: false, error: error});
         }
-
     }
 
     async registerAccount(req, res) {
@@ -57,14 +56,17 @@ class UserController {
 
     async activeAccount(req, res) {
         try {
-            const {token} = req.query;
-            const user = await mongooseToObject(await User.findOne({token: token}));
+            const {token, userId} = req.body;
+            const user = await mongooseToObject(await User.findOne({_id: userId}));
             if (!user) return res.status(200).json({success: false, message: "User not exist in Database"});
             if (user.isActive) return res.status(200).json({success: false, message: "Account activated"});
             const diff = Math.abs(new Date().getTime() - user.createdAt.getTime()) / 3600000;
             if (diff > 1) return res.status(200).json({success: false, message: "Authentication timeout"});
-            await User.updateOne({email: user.email}, {$set: {token: "", isActive: true}});
-            return res.status(200).json({success: true, message: "Successfully account activated"});
+            if (parseInt(user.token) === parseInt(token)) {
+                await User.updateOne({email: user.email}, {$set: {token: "", isActive: true}});
+                return res.status(200).json({success: true, message: "Successfully account activated"});
+            }
+            return res.status(200).json({success: false, message: "Fail account activated"});
         } catch (error) {
             return res.status(500).json({success: false, error: error});
         }
