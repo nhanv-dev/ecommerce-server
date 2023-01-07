@@ -18,11 +18,26 @@ class AuthController {
             const newUser = new User({fullName, username, password: CryptoJS.MD5(password).toString(), email});
             const savedUser = await newUser.save();
             const token = Math.floor(Math.random() * (999999 - 111111)) + 111111;
-            await User.updateOne({email: email}, {$set: {token: token}});
+            await User.updateOne({_id: savedUser._id.toString()}, {$set: {token: token}});
             await Mailer.sendConfirmCode(savedUser.username, savedUser.email, token);
-            res.status(200).json({success: true, user: {'id': savedUser._id.toString()}});
+            res.status(200).json({success: true, user: {'id': savedUser._id.toString(), token}});
         } catch (err) {
             res.status(500).json(err);
+        }
+    }
+
+    async validateRegister(req, res) {
+        try {
+            const {token, id} = req.body;
+            console.log(token, id)
+            const user = await User.findOne({_id: id});
+            console.log(user)
+            if (!user) return res.status(200).json({success: false});
+            await User.updateOne({_id: id}, {$set: {isActive: true}});
+
+            return res.status(200).json({success: true, user: await User.findOne({token, _id: id})});
+        } catch (err) {
+            return res.status(500).json(err);
         }
     }
 

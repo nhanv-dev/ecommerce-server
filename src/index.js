@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const socket = require("./socket")(server);
 
-const PORT = process.env.Port || 8080;
+const PORT = process.env.PORT || 8080;
 dotenv.config();
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
