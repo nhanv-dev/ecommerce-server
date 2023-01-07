@@ -1,12 +1,12 @@
 const express = require("express");
 const http = require("http");
-const database = require("./config/database");
+const database = require("./src/config/database");
 const cors = require("cors");
-const route = require("./routes");
+const route = require("./src/routes");
 const dotenv = require("dotenv");
 const app = express();
 const server = http.createServer(app);
-const socket = require("./socket")(server);
+const socket = require("./src/socket")(server);
 
 const PORT = process.env.PORT || 8080;
 dotenv.config();
