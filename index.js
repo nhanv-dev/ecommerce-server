@@ -24,6 +24,9 @@ app.use(cors({origin: '*'}));
 
 database.connect().then(() => {
     route(app);
+    app.get("/", (req, res) => {
+        res.send("Express is running!!")
+    })
 });
 
 server.listen(PORT, () => console.log(`Server is listening on ${PORT}`))
