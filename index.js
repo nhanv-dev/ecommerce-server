@@ -21,13 +21,14 @@ app.use(cors({origin: '*'}));
 //     res.setHeader('Access-Control-Allow-Credentials', true);
 //     next();
 // });
+database.connect();
+
 app.get("/", (req, res) => {
     res.send("Express is running!!")
-})
-database.connect().then(() => {
-    route(app);
-
 });
+
+route(app);
+
 
 server.listen(PORT, () => console.log(`Server is listening on ${PORT}`))
 
