@@ -14,14 +14,13 @@ app.use(express.json());
 
 app.use(cors({origin: '*'}));
 
-// app.use(function (req, res, next) {
-//     res.setHeader('Access-Control-Allow-Origin', 'https://ecommerce-d49f8.web.app');
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-//     res.setHeader('Access-Control-Allow-Credentials', true);
-//     next();
-// });
-database.connect();
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', 'https://ecommerce-d49f8.web.app');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    next();
+});
 
 app.get("/", (req, res) => {
     res.send("Express is running!!")
@@ -29,6 +28,7 @@ app.get("/", (req, res) => {
 
 route(app);
 
+database.connect();
 
 server.listen(PORT, () => console.log(`Server is listening on ${PORT}`))
 
