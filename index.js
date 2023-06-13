@@ -22,9 +22,9 @@ app.use(function (req, res, next) {
     next();
 });
 database.connect();
-app.get("/", (req, res) => {
-    res.send("Express is running!!")
-});
+// app.get("/", (req, res) => {
+//     res.send("Express is running!!")
+// });
 route(app);
 server.listen(PORT, () => console.log(`Server is listening on ${PORT}`))
 
