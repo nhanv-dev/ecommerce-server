@@ -21,15 +21,12 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     next();
 });
-
-app.get("/", (req, res) => {
-    res.send("Express is running!!")
+database.connect().then(() => {
+    app.get("/", (req, res) => {
+        res.send("Express is running!!")
+    });
+    route(app);
 });
-
-route(app);
-
-database.connect();
-
 server.listen(PORT, () => console.log(`Server is listening on ${PORT}`))
 
 module.exports = app;
