@@ -25,7 +25,8 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     next();
 });
-database.connect();
+
+await database.connect();
 // app.get("/", (req, res) => {
 //     res.send("Express is running!!")
 // });
