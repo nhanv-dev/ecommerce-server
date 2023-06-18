@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cors({origin: '*'}));
 
 app.use(function (req, res, next) {
-    const allowedOrigins = ['https://ecommerce-d49f8.web.app', 'http://localhost:8080'];
+    const allowedOrigins = ['https://ecommerce-d49f8.web.app', 'http://localhost:3000'];
     const origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin);
