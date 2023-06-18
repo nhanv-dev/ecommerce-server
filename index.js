@@ -26,7 +26,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-await database.connect();
+database.connect();
 // app.get("/", (req, res) => {
 //     res.send("Express is running!!")
 // });
